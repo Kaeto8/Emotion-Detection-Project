@@ -11,6 +11,14 @@ from keras.preprocessing import image
 #load weights
 #model.load_weights(r'D:\nwank\Documents\Emotion Detection Project\fer.h5')
 
+def rescaleFrame(frame, scale=1.47, scale2=2.2):
+    width = int(frame.shape[1] * scale)
+    height = int(frame.shape[0] * scale)
+    dimensions = (width,height)
+
+    return cv2.resize(frame,dimensions,interpolation=cv2.INTER_AREA)
+
+
 face_cascade = cv2.CascadeClassifier(r'D:\nwank\Documents\Emotion Detection Project\haarcascade_frontalface_default.xml')
 
 #emotion_labels = ['Angry','Disgust','Fear','Happy','Neutral','Sad','Surprise']
@@ -33,6 +41,8 @@ face_cascade = cv2.CascadeClassifier(r'D:\nwank\Documents\Emotion Detection Proj
 #    return (x,w,y,h), roi_gray, img
 
 cap = cv2.VideoCapture(0)
+
+
 
 while True:
     ret,frame = cap.read()
@@ -65,7 +75,8 @@ while True:
 
     cv2.putText(frame,txt,(50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),3)
 
-    cv2.imshow('frame',frame)
+    frame_resized = rescaleFrame(frame)
+    cv2.imshow('Emotion Recognition Software',frame_resized)
 
     if cv2.waitKey(1) & 0xff == ord('q'):
         break
